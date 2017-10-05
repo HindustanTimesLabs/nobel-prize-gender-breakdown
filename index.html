@@ -14,17 +14,17 @@ var canvas = d3.select("body").append("canvas")
 
 var context = canvas.node().getContext("2d");
 
-var colors = {male: "blue", female: "red", org: "gray"}
+var colors = {male: "#48a2d7", female: "#e74c3c", org: "#ccc"}
 
 d3.csv("all.csv", function(error, nodes){
   if (error) throw error;
 
   var simulation = d3.forceSimulation(nodes)
-    .force("y1", isolate(d3.forceY(-height / 6), function(d){ return d.type == "medicine" || d.type == "physics" || d.type == "chemistry"; }))
-    .force("y2", isolate(d3.forceY(height / 6), function(d){ return d.type == "peace" || d.type == "literature" || d.type == "economic-sciences"; }))
-    .force("x1", isolate(d3.forceX(-width / 3), function(d) { return d.type === "medicine" || d.type == "peace"; }))
+    .force("y1", isolate(d3.forceY(-height / 8), function(d){ return d.type == "medicine" || d.type == "physics" || d.type == "chemistry"; }))
+    .force("y2", isolate(d3.forceY(height / 8), function(d){ return d.type == "peace" || d.type == "literature" || d.type == "economic-sciences"; }))
+    .force("x1", isolate(d3.forceX(-width / 6), function(d) { return d.type === "medicine" || d.type == "peace"; }))
     .force("x2", isolate(d3.forceX(), function(d) { return d.type === "physics" || d.type == "literature"; }))
-    .force("x3", isolate(d3.forceX(width / 3), function(d) { return d.type === "chemistry" || d.type == "economic-sciences"; }))
+    .force("x3", isolate(d3.forceX(width / 6), function(d) { return d.type === "chemistry" || d.type == "economic-sciences"; }))
     .force("charge", d3.forceManyBody().strength(-10))
     .on("tick", ticked);
 
@@ -39,7 +39,7 @@ d3.csv("all.csv", function(error, nodes){
   function drawNode(d) {
     context.beginPath();
     context.moveTo(d.x, d.y);
-    context.arc(d.x, d.y, 5, 0, 2 * Math.PI);
+    context.arc(d.x, d.y, 7, 0, 2 * Math.PI);
     context.fillStyle = colors[d.gender];
     context.fill();
   }
