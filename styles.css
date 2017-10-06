@@ -22,8 +22,9 @@ body {
 	display: inline-block;
 }
 
-#viz .type-wrapper .title .type {
-	font-weight: bold;
+#viz .type-wrapper .type-title {
+	font-size: 1.2em;
+	text-anchor: middle;
 }
 
 #scroll {

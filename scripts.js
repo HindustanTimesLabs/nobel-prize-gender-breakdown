@@ -58,14 +58,11 @@ function ready(error, data){
 				.attr("class", "type-title " + type)
 				.attr("x", width / 2)
 				.attr("y", -title_offset)
-				.attr("text-anchor", "middle")
-				.style("font-weight", "bold")
-				.style("font-size", "1.2em")
-				.text(jz.str.toTitleCase(type.replace("-", " ")));
+				.text(jz.str.toStartCase(type));
 
 		var x = d3.scaleBand()
 				.range([0, width])
-				.padding(padding)
+				.padding(padding);
 
 		var y = d3.scaleBand()
 				.range([0, height])
@@ -73,11 +70,11 @@ function ready(error, data){
 
 		// array goes start_year, end_year, rows (which you have to figure out yourself for now)
 		var steps = [
-			[2017, 2017, 2],
-			[2016, 2016, 2],
-			[2015, 2015, 2],
-			[2000, 2017, 7],
-			[1901, 2017, 15]
+			[2017, 2017],
+			[2016, 2016],
+			[2015, 2015],
+			[2000, 2017],
+			[1901, 2017]
 		]
 
 		$(".frame").each(function(frame_index, frame){
@@ -86,17 +83,43 @@ function ready(error, data){
 				element: $(this),
 				handler: function(direction){
 					if (direction == "down"){
-						updateTitle(steps[frame_index][0], steps[frame_index][1])
-						draw(filterData(steps[frame_index][0], steps[frame_index][1]), steps[frame_index][2]);
+						updateAll(steps[frame_index][0], steps[frame_index][1])
 					} else {
-						updateTitle(steps[frame_index - 1][0], steps[frame_index - 1][1])
-						draw(filterData(steps[frame_index - 1][0], steps[frame_index - 1][1]), steps[frame_index - 1][2]);	
+						updateAll(steps[frame_index - 1][0], steps[frame_index - 1][1])
 					}
+
+					// reset the inputs
+					$(".end-year").attr("min", 1901).attr("max", 2017).val(2017)
+					$(".start-year").attr("min", 1901).attr("max", 2017).val(1901)
+
 				},
 				offset: $(window).height() / 2
 			});
 
 		});
+
+		function updateAll(start_year, end_year){
+			updateTitle(start_year, end_year)
+			draw(filterData(start_year, end_year), calcRowsFromYears(start_year, end_year));
+		}
+
+		$("input").on("change input", function(){
+			$(".end-year").attr("min", $(".start-year").val());
+			$(".start-year").attr("max", $(".end-year").val());
+			updateAll($(".start-year").val(), $(".end-year").val())
+		})
+
+		function calcRows(n){
+			return Math.ceil(Math.sqrt(n));
+		}
+
+		function calcRowsFromYears(start_year, end_year){
+			return calcRows(d3.max(types.map(function(type){
+				return data.filter(function(row){
+					return row.type == type && row.year >= start_year && row.year <= end_year;
+				}).length;	
+			})));
+		}
 
 		function updateTitle(start_year, end_year){
 			var x = start_year == end_year ? start_year : start_year + " &mdash; " + end_year;
@@ -104,11 +127,9 @@ function ready(error, data){
 		}
 
 		function filterData(start_year, end_year){
-			console.log(start_year, end_year, data[0]);
 			var x = type_data.filter(function(row){
 				return +row.year >= start_year && +row.year <= end_year;
 			});
-			console.log(x);
 			return x;
 		}
 
@@ -270,9 +291,7 @@ function ready(error, data){
 
 			}
 
-			function calcRows(n){
-				return Math.ceil(Math.sqrt(n));
-			}
+
 
 		}
 
@@ -281,6 +300,8 @@ function ready(error, data){
 
 
 }
+
+
 
 
 // var dim = d3.min([window.innerWidth, window.innerHeight]);
