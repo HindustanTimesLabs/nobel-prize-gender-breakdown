@@ -1,0 +1,40 @@
+body {
+	margin: 0;
+	
+	font-family: "PT Serif", serif;
+}
+
+#viz, #scroll {
+	width: 50%;
+}
+
+#viz {
+	position: fixed;
+	text-align: center;
+}
+#viz .viz-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+#viz .type-wrapper {
+	display: inline-block;
+}
+#viz .type-wrapper .title {
+  position: absolute;
+  padding: 0px 10px;
+}
+#viz .type-wrapper .title .type {
+	font-weight: bold;
+}
+
+#scroll {
+	margin-left: 50%;
+}
+#scroll .frame {
+	height: 100vh;
+	padding-top: 200px;
+	max-width: 500px;
+	margin: 0 auto;
+	font-size: 1.2em;
+}

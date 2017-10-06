@@ -1,59 +1,40 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" href="styles.css" />
+</head>
 <body>
+	<div id="viz">
+		<div class="viz-title">Nobel Prize Winners, <span class="year-range"></span></div>
+	</div>
+	<div id="scroll">
+		<div class="frame">
+			<p>This year, no woman won the Nobel Prize.</p>
+			<p>What about last year?</p>
+		</div>
+		<div class="frame">
+			<p>Nope. Ridiculous, huh?</p>
+			<p>The year before?</p>
+		</div>
+		<div class="frame">
+			<p>Two women out 11 won.</p>
+		</div>
+		<div class="frame">
+			<p>Since 2000?</p>
+		</div>
+		<div class="frame">
+			<p>That's basically normal. Since 1901, women haven't won very often.</p>
+			
+		</div>
+
+	</div>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://unpkg.com/jeezy@1.11.2/lib/jeezy.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/d3-marcon@2.0.2/build/d3-marcon.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+	<script src="scripts.js"></script>
+
 </body>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
-
-var width = window.innerWidth;
-var height = window.innerHeight;
-// append canvas
-var canvas = d3.select("body").append("canvas")
-  .attr("width", width)
-  .attr("height", height);
-
-var context = canvas.node().getContext("2d");
-
-var colors = {male: "#48a2d7", female: "#e74c3c", org: "#ccc"}
-
-d3.csv("all.csv", function(error, nodes){
-  if (error) throw error;
-
-  var simulation = d3.forceSimulation(nodes)
-    .force("y1", isolate(d3.forceY(-height / 8), function(d){ return d.type == "medicine" || d.type == "physics" || d.type == "chemistry"; }))
-    .force("y2", isolate(d3.forceY(height / 8), function(d){ return d.type == "peace" || d.type == "literature" || d.type == "economic-sciences"; }))
-    .force("x1", isolate(d3.forceX(-width / 6), function(d) { return d.type === "medicine" || d.type == "peace"; }))
-    .force("x2", isolate(d3.forceX(), function(d) { return d.type === "physics" || d.type == "literature"; }))
-    .force("x3", isolate(d3.forceX(width / 6), function(d) { return d.type === "chemistry" || d.type == "economic-sciences"; }))
-    .force("charge", d3.forceManyBody().strength(-10))
-    .on("tick", ticked);
-
-  function ticked() {
-    context.clearRect(0, 0, width, height);
-    context.save();
-    context.translate(width / 2, height / 2);
-    nodes.forEach(drawNode);
-    context.restore();
-  }
-
-  function drawNode(d) {
-    context.beginPath();
-    context.moveTo(d.x, d.y);
-    context.arc(d.x, d.y, 7, 0, 2 * Math.PI);
-    context.fillStyle = colors[d.gender];
-    context.fill();
-  }
-
-  function isolate(force, filter) {
-    var initialize = force.initialize;
-    force.initialize = function() { initialize.call(force, nodes.filter(filter)); };
-    return force;
-  }
-
-
-});
-
-
-
-
-</script>
+</html>
