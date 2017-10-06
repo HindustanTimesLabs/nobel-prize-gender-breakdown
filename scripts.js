@@ -2,10 +2,10 @@ var resp = {};
 var ww = $(window).width();
 if (ww <= 768){
 	resp.width = ($("#viz").width() / 2);
-	resp.height = window.innerHeight / 3 - $("#viz .viz-title").height();
+	resp.height = window.innerHeight / 3 - $("#viz .viz-title").height() - Number($("#viz").css("padding-top").split("px")[0]);
 } else {
 	resp.width = ($("#viz").width() / 3);
-	resp.height = window.innerHeight / 2 - $("#viz .viz-title").height();
+	resp.height = window.innerHeight / 2 - $("#viz .viz-title").height() - Number($("#viz").css("padding-top").split("px")[0]);
 }
 
 var colors = {"male": "#48a2d7", "female": "#e74c3c", "org": "#ccc"};

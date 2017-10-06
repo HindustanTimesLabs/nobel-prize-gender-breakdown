@@ -11,6 +11,7 @@ body {
 #viz {
 	position: fixed;
 	text-align: center;
+	padding-top: 20px;
 }
 #viz .viz-title {
   font-size: 1.3em;
