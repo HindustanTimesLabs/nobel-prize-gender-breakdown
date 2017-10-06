@@ -20,10 +20,7 @@ body {
 #viz .type-wrapper {
 	display: inline-block;
 }
-#viz .type-wrapper .title {
-  position: absolute;
-  padding: 0px 10px;
-}
+
 #viz .type-wrapper .title .type {
 	font-weight: bold;
 }

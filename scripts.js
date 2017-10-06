@@ -45,20 +45,20 @@ function ready(error, data){
 			.height(resp.height)
 			.left(10)
 			.right(10)
-			.top(40)
+			.top(60)
 			.bottom(30);
 
 		m.render();
 
 		var width = m.innerWidth(), height = m.innerHeight(), svg = m.svg(),
-			title_offset = 15;
+			title_offset = 45;
 
 		// the title
 		svg.append("text")
 				.attr("class", "type-title " + type)
-				.attr("x", 0)
+				.attr("x", width / 2)
 				.attr("y", -title_offset)
-				.attr("text-anchor", "start")
+				.attr("text-anchor", "middle")
 				.style("font-weight", "bold")
 				.style("font-size", "1.2em")
 				.text(jz.str.toTitleCase(type.replace("-", " ")));
@@ -156,13 +156,13 @@ function ready(error, data){
 					.attr("cx", function(d){ return legend_x(d); })
 					.attr("cy", 0)
 					.attr("r", legend_x.bandwidth() / 2)
-					.attr("transform", "translate(" + (d3.select(".type-title." + type).node().getBBox().width + 16) + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")");
+					.attr("transform", calcLegendCircleTransform);
 
 			legend_text
 				.transition()
 					.attr("x", function(d){ return legend_x(d.gender); })
 					.attr("y", 0)
-					.attr("transform", "translate(" + calcLegendTextLeft() + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")")
+					.attr("transform", calcLegendTextTransform)
 					.style("font-size", calcLegendTextSize)
 					.attr("dy", calcLegendTextDy)
 					.tween("text", tweenLegendText);
@@ -173,7 +173,7 @@ function ready(error, data){
 					.attr("cy", 0)
 					.attr("r", legend_x.bandwidth() / 2)
 					.attr("fill", function(d){ return colors[d]; })
-					.attr("transform", "translate(" + (d3.select(".type-title." + type).node().getBBox().width + 16)  + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")");
+					.attr("transform", calcLegendCircleTransform);
 
 			legend_text.enter().append("text")
 					.attr("class", function(d){ return "legend-text " + d.gender; })
@@ -183,11 +183,19 @@ function ready(error, data){
 					.attr("text-anchor", "middle")
 					.style("font-size", calcLegendTextSize)
 					.style("fill", "#fff")
-					.attr("transform", "translate(" + calcLegendTextLeft() + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")")
+					.attr("transform", calcLegendTextTransform)
 				.transition()
 					.tween("text", tweenLegendText);
 					
 
+			function calcLegendCircleTransform(){
+				return "translate(" + (((width + 20) / 2) - (legend_width / 2)) + ", " + (-title_offset + 16) + ")"
+				// return "translate(" + (d3.select(".type-title." + type).node().getBBox().width + 16)  + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")"
+			}
+			function calcLegendTextTransform(){
+				return "translate(" + (((width + 20) / 2) - (legend_width / 2)) + ", " + (-title_offset + 16) + ")"
+				// return "translate(" + calcLegendTextLeft() + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")";
+			}
 			function calcLegendTextLeft(){
 				return (d3.select(".type-title." + type).node().getBBox().width + 16);
 			}
