@@ -25,7 +25,8 @@ function ready(error, data){
 
 	var year_extent = d3.extent(data, function(d){ return +d.year; })
 	var controls_data = [{name: "start_year", year: year_extent[0]}, {name: "end_year", year: year_extent[1]}];
-	
+	var bg_data = {"start_year": year_extent[0], "end_year": year_extent[1]};
+
 	var controls_dim = 36;
 	var controls_m = d3.marcon()
 			.width($("#scroll .frame").width())
@@ -39,7 +40,7 @@ function ready(error, data){
 	controls_m.render();
 
 	var controls_width = controls_m.innerWidth(), controls_height = controls_m.innerHeight(), controls_svg = controls_m.svg();
-		
+	
 	var controls_domain = [];
 	for (var year = year_extent[0]; year <= year_extent[1]; year++){
 		controls_domain.push(year);
@@ -55,7 +56,7 @@ function ready(error, data){
 			.attr("width", controls_width)
 			.attr("x", 0)
 			.attr("y", controls_dim / 4)
-			.style("fill", "#fff")
+			.style("fill", "#eee")
 			.style("stroke", "#000")
 			.style("shape-rendering", "crispEdges");
 
@@ -66,17 +67,26 @@ function ready(error, data){
 		.attr("transform", "translate(0," + (controls_dim - 2) + ")")
 		.call(controls_axis)
 
-
 	drawControls(controls_data);
 			
 	function drawControls(controls_data){
+
+		var bg_data = [{"start_year": controls_data[0].year, "end_year": controls_data[1].year}];
+
 		var controls_rect = controls_svg.selectAll(".control-rect")
 				.data(controls_data, function(d){ return d.name; });
 		
 		var controls_text = controls_svg.selectAll(".control-text")
 				.data(controls_data, function(d){ return d.name; });
 
+		var controls_bg = controls_svg.selectAll(".control-bg")
+				.data(bg_data, function(d, i){ return i; });
+
 		// update
+		controls_bg
+				.attr("width", function(d){ return controls_x(d.end_year) - controls_x(d.start_year); })
+				.attr("x", function(d){ return controls_x(d.start_year); })
+
 		controls_rect
 				.attr("x", function(d, i){ return controls_x(d.year) - controls_dim / 2; });
 
@@ -85,6 +95,17 @@ function ready(error, data){
 				.text(function(d){ return d.year; });
 
 		// enter
+		controls_bg.enter().append("rect")
+				.attr("class", "control-bg")
+				.attr("height", function(d){ return controls_dim / 2; })
+				.attr("width", function(d){ return controls_x(d.end_year) - controls_x(d.start_year); })
+				.attr("x", function(d){ return controls_x(d.start_year); })
+				.attr("y", controls_dim / 4)
+				// .style("fill", "#45b29d")
+				.style("fill", "#fff")
+				.style("stroke", "#000")
+				.style("shape-rendering", "crispEdges");
+
 		controls_rect.enter().append("rect")
 				.attr("class", "control-rect")
 				.attr("width", controls_dim)
