@@ -8,8 +8,15 @@ body {
 	width: 50%;
 }
 
+.above {
+	float: left;
+	position: relative !important;
+	margin-left: 0 !important;
+}
+
 #viz {
 	position: fixed;
+	top: 0;
 	text-align: center;
 	padding-top: 20px;
 }

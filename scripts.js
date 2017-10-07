@@ -26,13 +26,13 @@ function ready(error, data){
 	var year_extent = d3.extent(data, function(d){ return +d.year; })
 	var controls_data = [{name: "start_year", year: year_extent[0]}, {name: "end_year", year: year_extent[1]}];
 	
-	var controls_dim = 20;
+	var controls_dim = 40;
 	var controls_m = d3.marcon()
 			.width($("#scroll .frame").width())
 			.height(controls_dim)
 			.top(0)
 			.bottom(0)
-			.right(20)
+			.right(controls_dim)
 			.left(0)
 			.element("#playground-controls");
 
@@ -139,15 +139,14 @@ function ready(error, data){
 					var type_data = _.where(data, {type: type});
 					var ts = svg_obj[type];
 					if (direction == "down"){
-					//start_year, end_year, type_data, svg, width, height, type, x, y
-						updateAll(steps[frame_index][0], steps[frame_index][1], type_data, ts.svg, ts.width, ts.height, type, ts.x, ts.y)
+					//start_year, end_year, type_data, svg, width, height, x, y
+						updateAll(steps[frame_index][0], steps[frame_index][1], type_data, ts.svg, ts.width, ts.height, ts.x, ts.y)
 					} else {
-						updateAll(steps[frame_index - 1][0], steps[frame_index - 1][1], type_data, ts.svg, ts.width, ts.height, type, ts.x, ts.y)
+						if (frame_index - 1 != -1){
+							updateAll(steps[frame_index - 1][0], steps[frame_index - 1][1], type_data, ts.svg, ts.width, ts.height, ts.x, ts.y)
+						}
 					}
 				});
-
-
-				
 
 				// reset the inputs
 				$(".end-year").attr("min", 1901).attr("max", 2017).val(2017)
@@ -156,10 +155,6 @@ function ready(error, data){
 			},
 			offset: $(window).height() / 2
 		});
-
-		
-
-		
 
 	});
 
@@ -190,16 +185,16 @@ function ready(error, data){
 			var ts = svg_obj[type];
 
 			drawControls(controls_data);
-			updateAll(controls_data[0].year, controls_data[1].year, type_data, ts.svg, ts.width, ts.height, type, ts.x, ts.y);
+			updateAll(controls_data[0].year, controls_data[1].year, type_data, ts.svg, ts.width, ts.height, ts.x, ts.y);
 
 		});
 		
 	}));
 
-	function updateAll(start_year, end_year, type_data, svg, width, height, type, x, y){
+	function updateAll(start_year, end_year, type_data, svg, width, height, x, y){
 
 		updateTitle(start_year, end_year)
-		draw(filterData(start_year, end_year, type_data), calcRowsFromYears(start_year, end_year), svg, width, height, type, x, y);
+		draw(filterData(start_year, end_year, type_data), calcRowsFromYears(start_year, end_year), svg, width, height, x, y);
 	}
 
 	function updateTitle(start_year, end_year){
@@ -226,7 +221,7 @@ function ready(error, data){
 		return x;
 	}
 
-	function draw(data, rows, svg, width, height, type, x, y){
+	function draw(data, rows, svg, width, height, x, y){
 
 		if (!rows) var rows = calcRows(data.length);
 
@@ -377,6 +372,41 @@ function ready(error, data){
 
 	} // end draw
 
+
+	// create the waypoints for fixing the viz
+	// this is for above the viz
+	new Waypoint({
+		element: $("#viz"),
+		handler: function(direction){
+			if (direction == "down"){
+				$("#viz").removeClass("above");
+				$("#scroll").removeClass("above");	
+			} else {
+				$("#viz").addClass("above");
+				$("#scroll").addClass("above");	
+			}
+			
+		}
+	});
+
+	// and for below
+	new Waypoint({
+		element: $("#section-2"),
+		handler: function(direction){
+			if (direction == "down"){
+				$("#viz").css({
+					position: "absolute",
+					top: $("#section-2").offset().top - $(window).height()
+				})
+			} else {
+				$("#viz").css({
+					position: "fixed",
+					top: 0
+				})
+			}
+		},
+		offset: $(window).height()
+	});
 
 }
 
