@@ -26,14 +26,14 @@ function ready(error, data){
 	var year_extent = d3.extent(data, function(d){ return +d.year; })
 	var controls_data = [{name: "start_year", year: year_extent[0]}, {name: "end_year", year: year_extent[1]}];
 	
-	var controls_dim = 40;
+	var controls_dim = 36;
 	var controls_m = d3.marcon()
 			.width($("#scroll .frame").width())
-			.height(controls_dim)
+			.height(controls_dim * 2)
 			.top(0)
-			.bottom(0)
-			.right(controls_dim)
-			.left(0)
+			.bottom(controls_dim)
+			.right(controls_dim / 2)
+			.left(controls_dim / 2)
 			.element("#playground-controls");
 
 	controls_m.render();
@@ -49,21 +49,55 @@ function ready(error, data){
 			.range([0, controls_width])
 			.domain(year_extent);
 
+	// draw a rect between them
+	controls_svg.append("rect")
+			.attr("height", controls_dim / 2)
+			.attr("width", controls_width)
+			.attr("x", 0)
+			.attr("y", controls_dim / 4)
+			.style("fill", "#fff")
+			.style("stroke", "#000")
+			.style("shape-rendering", "crispEdges");
+
+	var controls_axis = d3.axisBottom(controls_x).tickFormat(function(d){ return d.toString().replace(",", "")})
+
+	controls_svg.append("g")
+		.attr("class", "controls-axis")
+		.attr("transform", "translate(0," + (controls_dim - 2) + ")")
+		.call(controls_axis)
+
+
 	drawControls(controls_data);
 			
 	function drawControls(controls_data){
 		var controls_rect = controls_svg.selectAll(".control-rect")
-				.data(controls_data, function(d){ return d.name; })
-	
-		controls_rect
-				.attr("x", function(d, i){ return controls_x(d.year); });
+				.data(controls_data, function(d){ return d.name; });
+		
+		var controls_text = controls_svg.selectAll(".control-text")
+				.data(controls_data, function(d){ return d.name; });
 
+		// update
+		controls_rect
+				.attr("x", function(d, i){ return controls_x(d.year) - controls_dim / 2; });
+
+		controls_text
+				.attr("x", function(d, i){ return controls_x(d.year); })
+				.text(function(d){ return d.year; });
+
+		// enter
 		controls_rect.enter().append("rect")
 				.attr("class", "control-rect")
 				.attr("width", controls_dim)
 				.attr("height", controls_dim)
-				.attr("x", function(d, i){ return controls_x(d.year); })
+				.attr("x", function(d, i){ return controls_x(d.year) - controls_dim / 2; })
 				.attr("y", 0);
+
+		controls_text.enter().append("text")
+				.attr("class", "control-text")
+				.attr("x", function(d, i){ return controls_x(d.year); })
+				.attr("y", controls_dim / 2)
+				.attr("dy", 4)
+				.text(function(d){ return d.year; });
 	}
 
 	var svg_obj = {};
@@ -153,13 +187,18 @@ function ready(error, data){
 				$(".start-year").attr("min", 1901).attr("max", 2017).val(1901)
 
 			},
-			offset: $(window).height() / 2
+			offset: $(window).height() / 1.2
 		});
 
 	});
 
 
-	d3.selectAll(".control-rect").call(d3.drag().on("drag", function(d, i){
+	d3.selectAll(".control-rect").call(d3.drag().on("drag", updateControls));
+	d3.selectAll(".control-text").call(d3.drag().on("drag", updateControls));
+
+	function updateControls(d, i){
+		d3.select(this).moveToFront();
+		d3.selectAll(".control-text").moveToFront();
 		var coordinates = [0, 0];
 		coordinates = d3.mouse(this);
 		var x = coordinates[0];
@@ -188,8 +227,7 @@ function ready(error, data){
 			updateAll(controls_data[0].year, controls_data[1].year, type_data, ts.svg, ts.width, ts.height, ts.x, ts.y);
 
 		});
-		
-	}));
+	}
 
 	function updateAll(start_year, end_year, type_data, svg, width, height, x, y){
 
@@ -215,10 +253,9 @@ function ready(error, data){
 	}
 
 	function filterData(start_year, end_year, type_data){
-		var x = type_data.filter(function(row){
+		return type_data.filter(function(row){
 			return +row.year >= start_year && +row.year <= end_year;
 		});
-		return x;
 	}
 
 	function draw(data, rows, svg, width, height, x, y){

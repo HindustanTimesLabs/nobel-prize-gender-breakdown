@@ -2,6 +2,11 @@ body {
 	margin: 0;
 	font-family: "PT Serif", serif;
 }
+p.dek {
+  font-size: 1.2em;
+  margin-top: 80px;
+  line-height: 1.7em;
+}
 
 .title-background {
   height: 100px;
@@ -51,8 +56,22 @@ body {
 }
 #scroll .frame {
 	height: 100vh;
-	padding-top: 200px;
+	padding-top: 40px;
 	max-width: 500px;
 	margin: 0 auto;
 	font-size: 1.2em;
+}
+
+.control-rect {
+	cursor: ew-resize;
+}
+.control-text {
+	fill: #fff;
+	font-size: .6em;
+	text-anchor: middle;
+	font-family: "Open Sans", sans-serif;
+	cursor: ew-resize;
+}
+.controls-axis .domain {
+	display: none;
 }
