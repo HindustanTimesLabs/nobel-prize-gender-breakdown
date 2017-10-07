@@ -1,50 +1,119 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
 
-	<link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-	<div style="height: 100vh">The Nobel Prizes: So male</div>
-	<div id="viz" class="above">
-		<div class="viz-title">Nobel Prize Winners, <span class="year-range"></span></div>
-	</div>
-	<div id="scroll" class="above">
-		<div class="frame">
-			<p>This year, no woman won the Nobel Prize.</p>
-			<p>What about last year?</p>
+    <!-- Google Tag Manager -->
+    <script>dataLayer=[{"section":"interactives"}];</script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+    {'gtm.start': new Date().getTime(),event:'gtm.js'}
+    );var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KSLPR3B');</script>
+    <!-- End Google Tag Manager -->
+
+		<!-- meta -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Blank Project</title>
+
+		<!-- favicon -->
+    <link rel="shortcut icon" href="http://www.hindustantimes.com/res/img/app-images/HomePageV1/favicon.ico">
+
+    <!-- google webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|PT+Serif:400,400i,700" rel="stylesheet">
+
+		<!-- css cdns, use as needs -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/fonts/FontAwesome.otf" />
+
+		<!-- custom css -->
+		<!-- Rembember to Minify! -->
+		<link rel="stylesheet" href="css/template.css" />
+		<link rel="stylesheet" href="css/styles.css" />
+
+	</head>
+	<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KSLPR3B"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+
+		<div class="navbar">
+				<div class="navbar-logo">
+					<a href="http://www.hindustantimes.com/"><img src="img/logo.png" /></a>
+				</div>
+
+				<div class="navbar-share">
+					<a class="facebook-share" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=300');return false;"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+					<a class="twitter-share" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=300');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+				</div>
+
 		</div>
-		<div class="frame">
-			<p>Nope. Ridiculous, huh?</p>
-			<p>The year before?</p>
-		</div>
-		<div class="frame">
-			<p>Two women out 11 won.</p>
-		</div>
-		<div class="frame">
-			<p>Since 2000?</p>
-		</div>
-		<div class="frame">
-			<p>That's basically normal. Since 1901, women haven't won very often.</p>
-			<p>Play with the controls yourself.</p>
-			<div id="playground-controls"></div>
-			<!-- <input class="start-year" type="number" min="1901" max="2017" value="1901" />
-			<input class="end-year" type="number" min="1901" max="2017" value="2017" /> -->
-			
+		
+    <div class="main">
+    	<div class="title-background" style="background-image:url(img/nobel-prize.png)"></div>
+      <div class="titles-wrapper">
+        <h1 class="headline">The Nobel Prizes: So male?</h1>
+        <h2 class="byline">By <a href="http://www.hindustantimes.com/columns/harry-stevens">Harry Stevens</a> | DD Month, YYYY</h2>
+      </div>
+      <div class="copy">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tincidunt tempus velit ut iaculis. Etiam pharetra risus quis suscipit euismod. Duis eleifend enim eros, quis sodales eros accumsan in.</p>
+        <p>Phasellus consectetur sem nec lacinia mattis. Proin et dui at tortor semper sodales quis in lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium dui id iaculis tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+      </div>
+      <div id="viz" class="above">
+        <div class="viz-title">Nobel Prize Winners, <span class="year-range">2017</span></div>
+      </div>
+      <div id="scroll" class="above">
+        <div class="frame">
+          <p>This year, no woman won the Nobel Prize.</p>
+          <p>What about last year?</p>
+        </div>
+        <div class="frame">
+          <p>Nope. Ridiculous, huh?</p>
+          <p>The year before?</p>
+        </div>
+        <div class="frame">
+          <p>Two women out 11 won.</p>
+        </div>
+        <div class="frame">
+          <p>Since 2000?</p>
+        </div>
+        <div class="frame">
+          <p>That's basically normal. Since 1901, women haven't won very often.</p>
+          <p>Play with the controls yourself.</p>
+          <div id="playground-controls"></div>
+        </div>
+      </div>
+      <div style="height: 100vh;" id="section-2" class="copy above">
+        This is more text
+      </div>
 		</div>
 
-	</div>
-	<div style="height: 100vh;" id="section-2" class="above">
-		This is more text
-	</div>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="https://unpkg.com/jeezy@1.11.2/lib/jeezy.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://unpkg.com/d3-marcon@2.0.2/build/d3-marcon.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-	
-	<script src="scripts.js"></script>
+    <div class="footer" style="display: none">
+      <div class="copyright">HT Media Limited © 2017</div>
+      <div class="links">
+        <a href="http://www.hindustantimes.com/">Home</a> |
+        <a href="http://www.hindustantimes.com/contact-us">Contact</a> |
+        <a href="http://www.hindustantimes.com/privacy-policy/">Privacy</a> |
+        <a href="http://www.hindustantimes.com/disclaimer">Disclaimer</a> 
+      </div>
+    </div>
 
-</body>
+		<!-- js cdns, use as needed -->
+	  <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/jeezy@1.11.2/lib/jeezy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/d3-marcon@2.0.2/build/d3-marcon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+  
+		<!-- custom js -->
+		<script src="js/template.js"></script>
+		<script src="js/scripts.js"></script>
+
+	</body>
 </html>

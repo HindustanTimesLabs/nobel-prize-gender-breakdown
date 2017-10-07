@@ -12,7 +12,7 @@ var colors = {"male": "#48a2d7", "female": "#e74c3c", "org": "#ccc"};
 	padding = 0;
 
 d3.queue()
-		.defer(d3.csv, "all.csv")
+		.defer(d3.csv, "data/all.csv")
 		.await(ready);
 
 function ready(error, data){
@@ -97,7 +97,7 @@ function ready(error, data){
 			.left(10)
 			.right(10)
 			.top(60)
-			.bottom(30);
+			.bottom(60);
 
 		m.render();
 
@@ -381,12 +381,14 @@ function ready(error, data){
 			if (direction == "down"){
 				$("#viz").removeClass("above");
 				$("#scroll").removeClass("above");	
+				$(".footer").show();
 			} else {
 				$("#viz").addClass("above");
 				$("#scroll").addClass("above");	
+				$(".footer").hide();
 			}
-			
-		}
+		},
+		offset: 40
 	});
 
 	// and for below
@@ -394,14 +396,16 @@ function ready(error, data){
 		element: $("#section-2"),
 		handler: function(direction){
 			if (direction == "down"){
+				$("#section-2").removeClass("above");
 				$("#viz").css({
 					position: "absolute",
 					top: $("#section-2").offset().top - $(window).height()
-				})
+				});
 			} else {
+				$("#section-2").addClass("above");
 				$("#viz").css({
 					position: "fixed",
-					top: 0
+					top: 40
 				})
 			}
 		},
@@ -413,103 +417,13 @@ function ready(error, data){
 
 
 
-// var dim = d3.min([window.innerWidth, window.innerHeight]);
+// the background image
 
-// var width = dim, height = dim;
-
-// var svg = d3.select("body").append("svg")
-// 	.attr("width", width)
-// 	.attr("height", height);
-
-// var nodes_count = 9,
-// padding = .25;
-
-
-
-// function generateData(n){
-// var arr = [];
-// for (i = 0; i < n; i++){
-// 	arr.push({
-// 		id: i,
-// 		color: i % (jz.num.randBetween(1, 3)) == 1 ? "tomato" : "steelblue"
-// 	});
-// }
-// return arr;
-// }
-
-// draw(generateData(nodes_count));
-
-// d3.interval(function(){
-// draw(generateData(jz.num.randBetween(4, 50)))
-// }, 500);
-
-// function draw(data){
-
-// 	var rows = calcRows(data.length);
-
-// 	// update the scale domains
-// 	var x_domain = [], y_domain = [];
-// 	for (var i = 1; i <= rows; i++){
-// 		x_domain.push(i);
-// 		y_domain.push(i);
-// 	}
-// 	x.domain(x_domain);
-// 	y.domain(y_domain);
-
-// 	var square = svg.selectAll("rect")
-// 			.data(makeGrid(data, rows), function(d){ return d.id; });
-
-// 	square.exit()
-// 		.transition()
-// 			.style("opacity", 1e-6)
-// 			.remove();
-
-// 	square
-// 		.transition()
-// 			.attr("x", function(d){ return x(d.row); })
-// 			.attr("y", function(d){ return y(d.column); })
-// 			.attr("width", x.bandwidth())
-// 			.attr("height", y.bandwidth())
-// 			.style("fill", function(d){ return colors[d.gender]; });
-
-// 	square.enter().append("rect")
-// 			.attr("x", function(d){ return x(d.row); })
-// 			.attr("y", function(d){ return y(d.column); })
-// 			.attr("width", x.bandwidth())
-// 			.attr("height", y.bandwidth())
-// 			.style("fill", function(d){ return colors[d.gender]; })
-// 			.style("opacity", 1e-6)
-// 		.transition()
-// 			.style("opacity", 1);
-
-// 	function makeGrid(data, rows){
-
-// 		// an out array
-// 		var out = [];
-
-// 		// first, figure out what row each one is
-// 		data.forEach(function(d, i){
-// 			d.column = Math.ceil((i + 1) / rows);
-// 			return d;
-// 		});
-
-// 		// start with 1, the first row
-// 		for (var row = 1; row <= rows; row++){
-// 			// match the data in this row
-// 			var row_data = data.filter(function(d){ return d.column == row; });
-// 			row_data.forEach(function(d, i){
-// 				d.row = i + 1;
-// 				out.push(d);
-// 			});
-// 		}
-
-// 		return out;
-
-// 	}
-
-// 	function calcRows(n){
-// 		return Math.ceil(Math.sqrt(n));
-// 	}
-
-// }
-
+d3.interval(function(){
+	var curr = $(".title-background").css("background-image");
+	if (curr.indexOf("nobel-prize.png") != -1){
+		$(".title-background").css("background-image", "url('img/nobel-prize-blue.png')");
+	} else {
+		$(".title-background").css("background-image", "url('img/nobel-prize.png')");
+	}
+}, 3000);
