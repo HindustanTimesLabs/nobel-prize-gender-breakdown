@@ -418,12 +418,21 @@ function ready(error, data){
 
 
 // the background image
-
+var f = true;
+$(".title-background").flip();
 d3.interval(function(){
-	var curr = $(".title-background").css("background-image");
-	if (curr.indexOf("nobel-prize.png") != -1){
-		$(".title-background").css("background-image", "url('img/nobel-prize-blue.png')");
+	$(".title-background .back img").show();
+	$(".title-background").flip(f);
+	if (f == true) {
+		f = false;
 	} else {
-		$(".title-background").css("background-image", "url('img/nobel-prize.png')");
-	}
+		f = true
+	};
+	// var curr = $(".title-background").css("background-image");
+	// if (curr.indexOf("nobel-prize.png") != -1){
+	// 	$(".title-background").css("background-image", "url('img/nobel-prize-blue.png')");
+	// } else {
+	// 	$(".title-background").css("background-image", "url('img/nobel-prize.png')");
+	// }
+	$(".title-background").flip();
 }, 3000);

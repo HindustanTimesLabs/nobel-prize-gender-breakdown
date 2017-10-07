@@ -12,6 +12,9 @@ body {
   transition: background-image 1s;
   margin-top: 40px;
 }
+.title-background img {
+	width: 100%;
+}
 
 #viz, #scroll {
 	width: 50%;
