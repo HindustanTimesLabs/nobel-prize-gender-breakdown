@@ -2,10 +2,11 @@ body {
 	margin: 0;
 	font-family: "PT Serif", serif;
 }
-p.dek {
+.dek {
   font-size: 1.2em;
   margin-top: 80px;
   line-height: 1.7em;
+  text-align: center;
 }
 
 .title-background {
@@ -50,6 +51,10 @@ p.dek {
 	font-size: 1.2em;
 	text-anchor: middle;
 }
+#viz .winner.selected {
+	stroke: #000;
+	stroke-width: 2px;
+}
 
 #scroll {
 	margin-left: 50%;
@@ -61,6 +66,7 @@ p.dek {
 	margin: 0 auto;
 	font-size: 1.3em;
 	line-height: 1.7em;
+	text-align: center;
 }
 
 .legend-text {
@@ -99,4 +105,30 @@ p.dek {
 }
 .inline.org {
 	background: #ccc;
+}
+
+
+/*TIP*/
+.tip {
+	font-family: "Open Sans", sans-serif;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  width: 240px;
+  position: absolute;
+  padding: 5px;
+  text-align: center;
+  opacity: .9;
+}
+.tip .name {
+	font-weight: bold;
+	font-size: .9em;
+}
+.tip .year, .tip .country-of-birth {
+	font-size: .8em;
+}
+.tip .for {
+	margin-top: 5px;
+	text-align: left;
+	font-size: .7em;
 }

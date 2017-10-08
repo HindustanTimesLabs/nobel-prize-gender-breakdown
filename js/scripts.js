@@ -8,6 +8,9 @@ if (ww <= 768){
 	resp.height = window.innerHeight / 2 - $("#viz .viz-title").height() - Number($("#viz").css("padding-top").split("px")[0]);
 }
 
+$("body").append("<div class='tip'><div class='name'></div><div class='country-of-birth'></div><div class='year'></div><div class='for'></div></div>");
+$(".tip").hide();
+
 var colors = {"male": "#48a2d7", "female": "#e74c3c", "org": "#ccc"};
 	padding = 0;
 
@@ -56,9 +59,12 @@ function ready(error, data){
 			.attr("width", controls_width)
 			.attr("x", 0)
 			.attr("y", controls_dim / 4)
-			.style("fill", "#eee")
-			.style("stroke", "#000")
-			.style("shape-rendering", "crispEdges");
+			.attr("rx", 10)
+			.attr("ry", 10)
+							.style("fill", "#fff")
+				.style("stroke", "rgb(170, 170, 170)")
+
+			// .style("shape-rendering", "crispEdges");
 
 	var controls_axis = d3.axisBottom(controls_x).tickFormat(function(d){ return d.toString().replace(",", "")})
 
@@ -88,7 +94,7 @@ function ready(error, data){
 				.attr("x", function(d){ return controls_x(d.start_year); })
 
 		controls_rect
-				.attr("x", function(d, i){ return controls_x(d.year) - controls_dim / 2; });
+				.attr("cx", function(d, i){ return controls_x(d.year); })
 
 		controls_text
 				.attr("x", function(d, i){ return controls_x(d.year); })
@@ -101,17 +107,15 @@ function ready(error, data){
 				.attr("width", function(d){ return controls_x(d.end_year) - controls_x(d.start_year); })
 				.attr("x", function(d){ return controls_x(d.start_year); })
 				.attr("y", controls_dim / 4)
-				// .style("fill", "#45b29d")
-				.style("fill", "#fff")
-				.style("stroke", "#000")
-				.style("shape-rendering", "crispEdges");
+				.style("fill", "#eee")
+				.style("stroke", "#888")
+				// .style("shape-rendering", "crispEdges");
 
-		controls_rect.enter().append("rect")
+		controls_rect.enter().append("circle")
 				.attr("class", "control-rect")
-				.attr("width", controls_dim)
-				.attr("height", controls_dim)
-				.attr("x", function(d, i){ return controls_x(d.year) - controls_dim / 2; })
-				.attr("y", 0);
+				.attr("r", controls_dim / 2)
+				.attr("cx", function(d, i){ return controls_x(d.year); })
+				.attr("cy", controls_dim / 2);
 
 		controls_text.enter().append("text")
 				.attr("class", "control-text")
@@ -338,7 +342,7 @@ function ready(error, data){
 				.attr("cy", 0)
 				.attr("r", legend_x.bandwidth() / 2)
 				.attr("fill", function(d){ return colors[d]; })
-				.attr("transform", calcLegendCircleTransform);
+				.attr("transform", calcLegendCircleTransform)
 
 		legend_text.enter().append("text")
 				.attr("class", function(d){ return "legend-text " + d.gender; })
@@ -349,8 +353,8 @@ function ready(error, data){
 				.style("font-size", calcLegendTextSize)
 				.style("fill", "#fff")
 				.attr("transform", calcLegendTextTransform)
-				.text(function(d){ return d.count })	
-				
+				.text(function(d){ return d.count });
+
 		function calcLegendCircleTransform(){
 			return "translate(" + (((width + 20) / 2) - (legend_width / 2)) + ", " + (-title_offset + 16) + ")"
 			// return "translate(" + (d3.select(".type-title." + type).node().getBBox().width + 16)  + ", " + (-title_offset - (legend_x.bandwidth() / 2)) + ")"
@@ -388,11 +392,12 @@ function ready(error, data){
 				.attr("r", 0)
 				.remove()
 
-		circle
+		circle.on("mouseover", tipon).on("mouseout", tipoff)
 			.transition()
 				.attr("cx", function(d){ return x(d.row) + x.bandwidth() / 2; })
 				.attr("cy", function(d){ return y(d.column) + y.bandwidth() / 2; })
 				.attr("r", d3.min([x.bandwidth(), y.bandwidth()]) / 2)
+				
 
 		circle.enter().append("circle")
 				.attr("class", "winner")
@@ -400,8 +405,74 @@ function ready(error, data){
 				.attr("cy", function(d){ return y(d.column) + y.bandwidth() / 2; })
 				.style("fill", function(d){ return colors[d.gender]; })
 				.attr("r", 0)
+				.on("mouseover", tipon).on("mouseout", tipoff)
 			.transition()
 				.attr("r", d3.min([x.bandwidth(), y.bandwidth()]) / 2)
+				
+
+		function tipoff(d){
+			console.log(d);
+			d3.selectAll(".winner").classed("selected", false);
+			$(".tip").hide();
+		}
+
+		function tipon(d){
+
+			$(".tip").show();
+
+			d3.select(this).classed("selected", true);
+			
+			// populate the tip
+			$(".tip .name").html(d.name);
+			$(".tip .country-of-birth").html(d.country);
+			$(".tip .year").html(d.year);
+			$(".tip .for").html(jz.str.toSentenceCase(d.description) + ".");
+
+			// position
+			var x_pos = x(d.row);
+			var y_pos = y(d.column);
+			var tip_height = $(".tip").height();
+			var tip_width = $(".tip").width();
+			var tip_padding_h = getN($(".tip").css("padding-left")) + getN($(".tip").css("padding-right"));
+			var tip_padding_v = getN($(".tip").css("padding-top")) + getN($(".tip").css("padding-bottom"));
+			var viz_top = $(".type-wrapper ." + d.type).offset().top;
+			var viz_left = $(".type-wrapper ." + d.type).offset().left;
+			var circle_radius = (d3.min([x.bandwidth(), y.bandwidth()]) / 2);
+
+			var viz_position = $("#viz").css("position")
+
+			function getN(padding){
+				return Number(padding.split("px")[0]);
+			}
+
+			var row_max = d3.max(data, function(d){ return d.row; })
+
+			// Don't know why this won't work for all sizes
+			var offset = row_max == 2 ? 20 :
+				row_max == 3 ? 35 :
+				row_max == 4 ? 45 : 
+				row_max == 5 ? 50 :
+				row_max == 6 ? 63 :
+				row_max == 7 ? 67 :
+				row_max == 8 ? 70 :
+				row_max == 9 ? 73 :
+				row_max == 10 ? 76 :
+				ww / 18;
+			
+			var tip_left = x_pos + viz_left - (tip_width / 2) - offset;
+			
+			tip_left = tip_left < 0 ? 0 : 
+				tip_left + tip_width > ww ? ww - tip_width :
+				tip_left;
+
+			var tip_top = y_pos + viz_top - tip_height + getN($(".navbar").css("height"));
+
+			$(".tip").css({
+				left: tip_left,
+				top: tip_top
+			});
+
+		}
 
 		function makeGrid(data, rows){
 
