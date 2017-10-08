@@ -243,6 +243,8 @@ function ready(error, data){
 			if (yr <= controls_data[0].year) yr = controls_data[0].year;
 			controls_data[1].year = yr;
 		}
+		// and update the last step
+		steps[steps.length - 1] = [controls_data[0].year, controls_data[1]. year];
 		
 		types.forEach(function(type){
 			var type_data = _.where(data, {type: type});
@@ -392,7 +394,9 @@ function ready(error, data){
 				.attr("r", 0)
 				.remove()
 
-		circle.on("mouseover", tipon).on("mouseout", tipoff)
+		circle
+				.on("mouseover", tipon)
+				.on("mouseout", tipoff)
 			.transition()
 				.attr("cx", function(d){ return x(d.row) + x.bandwidth() / 2; })
 				.attr("cy", function(d){ return y(d.column) + y.bandwidth() / 2; })
@@ -405,13 +409,13 @@ function ready(error, data){
 				.attr("cy", function(d){ return y(d.column) + y.bandwidth() / 2; })
 				.style("fill", function(d){ return colors[d.gender]; })
 				.attr("r", 0)
-				.on("mouseover", tipon).on("mouseout", tipoff)
+				.on("mouseover", tipon)
+				.on("mouseout", tipoff)
 			.transition()
 				.attr("r", d3.min([x.bandwidth(), y.bandwidth()]) / 2)
 				
 
-		function tipoff(d){
-			console.log(d);
+		function tipoff(){
 			d3.selectAll(".winner").classed("selected", false);
 			$(".tip").hide();
 		}
@@ -422,6 +426,7 @@ function ready(error, data){
 
 			d3.select(this).classed("selected", true);
 			
+
 			// populate the tip
 			$(".tip .name").html(d.name);
 			$(".tip .country-of-birth").html(d.country);
@@ -429,7 +434,8 @@ function ready(error, data){
 			$(".tip .for").html(jz.str.toSentenceCase(d.description) + ".");
 
 			// position
-			var x_pos = x(d.row);
+			var b_box = d3.select(this).node().getBoundingClientRect();
+			var x_pos = b_box.x;
 			var y_pos = y(d.column);
 			var tip_height = $(".tip").height();
 			var tip_width = $(".tip").width();
@@ -439,38 +445,27 @@ function ready(error, data){
 			var viz_left = $(".type-wrapper ." + d.type).offset().left;
 			var circle_radius = (d3.min([x.bandwidth(), y.bandwidth()]) / 2);
 
-			var viz_position = $("#viz").css("position")
+			var tip_left = x_pos + (b_box.width / 2) - (tip_width / 2) - (tip_padding_h / 2);
 
-			function getN(padding){
-				return Number(padding.split("px")[0]);
-			}
-
-			var row_max = d3.max(data, function(d){ return d.row; })
-
-			// Don't know why this won't work for all sizes
-			var offset = row_max == 2 ? 20 :
-				row_max == 3 ? 35 :
-				row_max == 4 ? 45 : 
-				row_max == 5 ? 50 :
-				row_max == 6 ? 63 :
-				row_max == 7 ? 67 :
-				row_max == 8 ? 70 :
-				row_max == 9 ? 73 :
-				row_max == 10 ? 76 :
-				ww / 18;
-			
-			var tip_left = x_pos + viz_left - (tip_width / 2) - offset;
-			
-			tip_left = tip_left < 0 ? 0 : 
+			// prevent hanging
+			tip_left = tip_left < 0 ? 0 :
 				tip_left + tip_width > ww ? ww - tip_width :
 				tip_left;
 
-			var tip_top = y_pos + viz_top - tip_height + getN($(".navbar").css("height"));
+			var tip_top = y_pos + viz_top - tip_height + 50; // 50 is a magic number...
+
+			
+
+		
 
 			$(".tip").css({
 				left: tip_left,
 				top: tip_top
 			});
+
+			function getN(padding){
+				return Number(padding.split("px")[0]);
+			}
 
 		}
 
