@@ -31,6 +31,9 @@ body {
 	position: relative !important;
 	margin-left: 0 !important;
 }
+.above-2 {
+	height: 100vh;
+}
 
 #viz {
 	position: fixed;
@@ -68,6 +71,13 @@ body {
 	line-height: 1.7em;
 	text-align: center;
 }
+.frame .instructions {
+	color: #888; font-size: .8em; font-family: "Open Sans";
+}
+.frame .scroll {
+	font-style: italic;
+  font-family: "Open Sans";
+}
 
 .legend-text {
 	font-family: "Open Sans", sans-serif;
@@ -75,6 +85,8 @@ body {
 
 .control-rect {
 	cursor: ew-resize;
+	fill: #444;
+	stroke: #aaa;
 }
 .control-text {
 	fill: #fff;
@@ -118,17 +130,95 @@ body {
   position: absolute;
   padding: 5px;
   text-align: center;
-  opacity: .9;
+  opacity: .98;
 }
 .tip .name {
 	font-weight: bold;
 	font-size: .9em;
 }
-.tip .year, .tip .country-of-birth {
+.tip .year {
 	font-size: .8em;
+}
+.tip .country-of-birth {
+	font-size: .7em;
 }
 .tip .for {
 	margin-top: 5px;
 	text-align: left;
 	font-size: .7em;
+}
+
+
+
+#time-chart {
+  margin: 0 auto;
+  display: table;
+  width: 100%;
+  max-width: 800px;
+}
+#time-chart .y.axis .domain {
+  display: none;
+}
+
+
+.chart {
+	font-family: "Open Sans", sans-serif;
+}
+.chart .chart-title {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+.chart .chart-source {
+	font-size: .8em;
+	color: #888;
+	margin-top: 10px;
+}
+
+.mobile-only {
+	display: none;
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 768px) {
+	.desktop-only {
+		display: none !important;
+	}
+	.mobile-only {
+		display: block;
+	}
+	#scroll {
+		padding: 20px;
+		width:auto;
+	}
+	#viz {
+		z-index: -1;
+	}
+	#scroll {
+		margin-left: 0%;
+	}
+	#scroll .frame {
+		text-align: left;
+		font-size: 1em;
+		max-width: 600px;
+		padding-top: 0px;
+		height: auto;
+	}
+	#scroll .frame img, .copy img {
+		width: 100%;
+		margin: 20px 0px;
+	}
+
+	.instructions {
+		display: none;
+	}
+	#scroll p {
+		background: rgba(255, 255, 255, .9);
+	}
+	#time-chart {
+		padding-left: 10px;
+    padding-right: 10px;
+	}
+	.dek {
+		text-align: left;
+	}
 }

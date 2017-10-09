@@ -1,6 +1,6 @@
 // meta tags
-var twitterStatus = '';
-var hashtags = '';
+var twitterStatus = 'The Nobel Prizes: So male?';
+var hashtags = 'htdata,nobelprize';
 
 $(document).ready(function(){
   // calc breakpoint

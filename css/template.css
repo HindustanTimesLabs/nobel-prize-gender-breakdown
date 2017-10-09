@@ -51,7 +51,7 @@ a:hover, a:focus {
   font-family: "PT Serif", serif;
   max-width: 750px;
   margin: 20px auto;
-  padding: 0 10px;
+  padding: 0 20px;
 }
 .titles-wrapper h1 {
   -webkit-margin-before: 0;
@@ -140,9 +140,52 @@ a:hover, a:focus {
   color: #43d854;
 }
 
+/*RELATED*/
+.related-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: table;
+  margin-bottom: 40px;
+}
+.related-wrapper a {
+  color: #000;
+}
+.related-header {
+  text-align: left;
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.related-story {
+  opacity: .9;
+}
+.related-story:hover {
+  opacity: 1;
+}
+.related-image {
+  height: 150px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.related-story {
+  display: inline-block;
+  width: 32.9%;
+}
+.related-headline {
+  font-weight: bold;
+  font-size: .9em;
+  margin-top: 5px;
+}
+.related-date {
+  font-size: .8em;
+  margin-top: 5px;
+}
+
 
 /*FOOTER*/
 .footer {
+  font-family: "Open Sans", sans-serif;
   background: #000;
   color: #fff;
   height: 80px;
@@ -181,7 +224,7 @@ a:hover, a:focus {
   }
   .titles-wrapper h1 {
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 2em;
     margin-bottom: 40px;
     line-height: 1.5em;
   }
@@ -223,6 +266,17 @@ a:hover, a:focus {
     border-width: 4px!important;
   }
 
+  /*related*/
+  .related-wrapper {
+    padding: 0px 20px;
+    text-align: center;
+  }
+  .related-story {
+    width: 49.5%;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
   /*footer*/
   .footer {
     text-align: center;
@@ -243,6 +297,11 @@ a:hover, a:focus {
   .navbar .navbar-logo img {
     height: 33px;
     margin-top: 3px;
+  }
+  
+  /*related*/
+  .related-story {
+    width: 100%;
   }
 
 }
